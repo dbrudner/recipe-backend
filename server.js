@@ -3,30 +3,24 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
+const db = require("./models");
 
-MongoClient.connect(
-	process.env.MONGO_URI,
-	{ useNewUrlParser: true },
-	(err, client) => {
-		if (err) {
-			throw err;
-		}
-	},
-);
-
-const server = express();
-
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
-server.use(cors());
-
-server.get("/hey", (req, res) => {
-	res.send("Hey");
+mongoose.connection.on("open", function() {
+	console.log("Connected to mongo server.");
 });
 
-server.listen(port, err => {
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use("/", require("./api"));
+
+app.listen(port, err => {
 	if (err) throw err;
 	console.log(`> Ready on http://localhost:${port}`);
 });

@@ -23,7 +23,10 @@
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
 		"express": "^4.17.0",
+		"glob": "^7.1.4",
+		"lodash": "^4.17.11",
 		"mongodb": "^3.2.5",
+		"mongoose": "^5.5.9",
 		"node-fetch": "^2.6.0"
 	},
 	"devDependencies": {
