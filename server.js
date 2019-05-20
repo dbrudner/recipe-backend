@@ -21,11 +21,12 @@ app.use(cors());
 
 app.use(
 	"/api",
-	graphqlHTTP({
+	graphqlHTTP((req, res) => ({
 		schema: require("./api/schema"),
 		rootValue: require("./api/root"),
 		graphiql: true,
-	}),
+		context: { req, res },
+	})),
 );
 
 app.listen(port, err => {
