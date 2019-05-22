@@ -2,6 +2,7 @@ module.exports = `
 	type User {
 		name: String
 		password: String
+		recipes: [Recipe]
 	}
 
 	input UserInput {
