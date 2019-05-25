@@ -4,8 +4,14 @@ const recipeSchema = mongoose.Schema({
 	user: { type: String, required: true },
 	name: { type: String, required: true },
 	steps: [String],
-	ingredients: [String],
-	description: String,
+	ingredients: [
+		{
+			id: String,
+			measurement: String,
+			quantity: Number
+		}
+	],
+	description: String
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);

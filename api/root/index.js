@@ -14,7 +14,7 @@ module.exports = {
 			const hashedPassword = await bcrypt.hashSync(password, 10);
 			const user = await db.User.create({
 				name,
-				password: hashedPassword,
+				password: hashedPassword
 			});
 
 			const token = jwt.sign({ user: user.name }, process.env.APP_SECRET);
@@ -49,7 +49,24 @@ module.exports = {
 		return user;
 	},
 
-	addRecipe(payload, { req, res }) {
-		return payload;
-	},
+	addRecipe: async ({ newRecipe }, { req, res }) => {
+		console.log(newRecipe);
+
+		if (!req.isValidUser) {
+			throw new Error("Must be logged in to add recipe");
+		}
+
+		const alreadyExistingRecipe = await db.Recipe.findOne({
+			name: newRecipe.name,
+			user: newRecipe.user
+		});
+
+		if (alreadyExistingRecipe) {
+			throw new Error("You already have a recipe with this name");
+		}
+
+		const createdRecipe = await db.Recipe.create({ ...newRecipe });
+
+		return createdRecipe;
+	}
 };
