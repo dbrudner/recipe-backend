@@ -9,18 +9,30 @@ const schema = buildSchema(`
 
 	type Recipe {
 		user: String
-		steps: String
+		name: String
+		steps: [String]
 		ingredients: [Ingredient]
+		description: String
+	}
+
+	input IngredientInput {
+		id: String
+		quantity: Float
+		measurement: String
 	}
 
 	input RecipeInput {
+		user: String
 		name: String
-		password: String
+		steps: [String]
+		ingredients: [IngredientInput]
+		description: String
 	}
 
 	type Mutation {
 		createUser(newUser: UserInput): User
 		login(user: UserInput): User
+		addRecipe(newRecipe: RecipeInput): Recipe
 	}
 
 	type Query {

@@ -26,7 +26,11 @@ module.exports = {
 		}
 	},
 
-	login: async ({ user: { name, password } }, { res }) => {
+	login: async ({ user: { name, password } }, { req, res }) => {
+		if (req.isValidUser) {
+			throw new Error("Already signed in");
+		}
+
 		const user = await db.User.findOne({ name });
 
 		if (!user) {
@@ -43,5 +47,9 @@ module.exports = {
 		res.cookie("user", token);
 
 		return user;
+	},
+
+	addRecipe(payload, { req, res }) {
+		return payload;
 	},
 };
