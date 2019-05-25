@@ -1,0 +1,6 @@
+# mutation {
+#   addRecipe(newRecipe: {user: "1", name:"x32", ingredients:[{quantity:5, measurement:"blah", id:"1"}], description:"x"}){
+#     	name
+    
+#   }	
+# }

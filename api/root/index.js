@@ -56,6 +56,22 @@ module.exports = {
 			throw new Error("Must be logged in to add recipe");
 		}
 
+		// If ingredients don't exist in database, add them
+		// Don't return anything back to request for this
+		// Just for keeping database of ingredients
+		newRecipe.ingredients.forEach(async ingredient => {
+			console.log(ingredient);
+			const alreadyAddedIngredient = await db.Ingredient.findOne({
+				name: ingredient
+			});
+
+			if (!alreadyAddedIngredient) {
+				const newIngredient = await db.Ingredient.create({
+					name: ingredient
+				});
+			}
+		});
+
 		const alreadyExistingRecipe = await db.Recipe.findOne({
 			name: newRecipe.name,
 			user: newRecipe.user
@@ -68,5 +84,10 @@ module.exports = {
 		const createdRecipe = await db.Recipe.create({ ...newRecipe });
 
 		return createdRecipe;
+	},
+
+	ingredients: async () => {
+		const ingredients = await db.Ingredient.find({});
+		return ingredients;
 	}
 };

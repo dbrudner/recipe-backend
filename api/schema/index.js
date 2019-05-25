@@ -33,12 +33,11 @@ const schema = buildSchema(`
 		createUser(newUser: UserInput): User
 		login(user: UserInput): User
 		addRecipe(newRecipe: RecipeInput): Recipe
-		user: String
-		description: String
 	}
 
 	type Query {
 		dummy: String
+		ingredients: [Ingredient]
 	}
 `);
 
