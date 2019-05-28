@@ -2,7 +2,14 @@ module.exports = `
 	type User {
 		name: String
 		password: String
-		recipes: [Recipe]
+		recipesConnection: {
+			edges {
+				cursor: String
+				node {
+					recipes: [Recipe]
+				}
+			}
+		}
 	}
 
 	input UserInput {

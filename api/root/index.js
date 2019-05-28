@@ -14,7 +14,7 @@ module.exports = {
 			const hashedPassword = await bcrypt.hashSync(password, 10);
 			const user = await db.User.create({
 				name,
-				password: hashedPassword
+				password: hashedPassword,
 			});
 
 			const token = jwt.sign({ user: user.name }, process.env.APP_SECRET);
@@ -50,8 +50,6 @@ module.exports = {
 	},
 
 	addRecipe: async ({ newRecipe }, { req, res }) => {
-		console.log(newRecipe);
-
 		if (!req.isValidUser) {
 			throw new Error("Must be logged in to add recipe");
 		}
@@ -59,22 +57,21 @@ module.exports = {
 		// If ingredients don't exist in database, add them
 		// Don't return anything back to request for this
 		// Just for keeping database of ingredients
-		newRecipe.ingredients.forEach(async ingredient => {
-			console.log(ingredient);
+		newRecipe.ingredients.forEach(async ({ name }) => {
 			const alreadyAddedIngredient = await db.Ingredient.findOne({
-				name: ingredient
+				name,
 			});
 
 			if (!alreadyAddedIngredient) {
 				const newIngredient = await db.Ingredient.create({
-					name: ingredient
+					name,
 				});
 			}
 		});
 
 		const alreadyExistingRecipe = await db.Recipe.findOne({
 			name: newRecipe.name,
-			user: newRecipe.user
+			user: newRecipe.user,
 		});
 
 		if (alreadyExistingRecipe) {
@@ -89,5 +86,5 @@ module.exports = {
 	ingredients: async () => {
 		const ingredients = await db.Ingredient.find({});
 		return ingredients;
-	}
+	},
 };

@@ -8,7 +8,13 @@ const schema = buildSchema(`
 	}
 
 	type Recipe {
-		user: String
+		userConnection: 
+			edges {
+				cursor: String
+				node {
+					user: User
+				}
+		}
 		name: String
 		steps: [String]
 		ingredients: [Ingredient]
@@ -16,7 +22,7 @@ const schema = buildSchema(`
 	}
 
 	input IngredientInput {
-		id: String
+		name: String
 		quantity: Float
 		measurement: String
 	}
